@@ -1,13 +1,14 @@
 <template>
   <div class="recipe-card" >
+  <div class="recipe-card-box">
 <ul v-for="recipe in recipes" :key="recipe.title">
   <h1>{{recipe.title}}</h1>
   <li v-for="(ingredient,i) in recipe.ingredients" :key="i">
     <span>{{ingredient}}</span>
   </li>
-  
+  <button @click='deleteRecipe(recipe.id)'>Delete {{recipe.title}}</button>
 </ul>
-    
+    </div>
   </div>
 </template>
 
@@ -28,23 +29,29 @@ export default {
     db.collection('recipes').get()
     .then(snapshot => {
       snapshot.forEach(document => {
-        let recipe = document.data()
-        recipe.id = document.id
+        let recipe = document.data();
+        recipe.id = document.id;
 
-        this.recipes.push(recipe)
+        this.recipes.push(recipe);
       })
     })
   },
   methods: {
+    //take in the recipe id we want to delete
     deleteRecipe(id) {
+      //find the collection and the document id to delete
       db.collection('recipes').doc(id).delete()
+      //delete from our local array as well
+      .then(()=>{
+        this.recipes = this.recipes.filter(recipe => recipe.id !== id);
+      })
     }
   }
 };
 </script>
 
 <style lang="css">
-  .recipe-card {
+  .recipe-card-box {
     background-color: wheat;
     height: 40vh;
     width: 20em;
