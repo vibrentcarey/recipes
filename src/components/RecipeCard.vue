@@ -1,8 +1,9 @@
 <template>
   <div class="recipe-card" >
-  <div class="recipe-card-box">
-<ul v-for="recipe in recipes" :key="recipe.title">
-  <h1>{{recipe.title}}</h1>
+    <h1>Recipes</h1>
+  <div v-for="recipe in recipes" :key="recipe.title" class="recipe-card-box">
+<ul >
+  <h2>{{recipe.title}}</h2>
   <li v-for="(ingredient,i) in recipe.ingredients" :key="i">
     <span>{{ingredient}}</span>
   </li>

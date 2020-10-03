@@ -22,6 +22,8 @@
 
 <script>
 import db from '@/firebase/init'
+import slugify from 'slugify'
+
 export default {
   name: 'AddRecipe',
   data() {
@@ -35,11 +37,25 @@ export default {
   },
   methods: {
     addRecipe(){
-      db.collection('recipes').add({
+      if(this.title){
+        this.feedback = null
+        this.slug = slugify(this.title, {
+          replacement: '-',
+          remove:/[$*_+~.()'"!\-:@]/g,
+          lower: true
+        });
+        //add the recipe to the database if all verification passes
+          db.collection('recipes').add({
         title: this.title,
         ingredients: this.ingredients,
         slug: this.slug
+      }).then(()=>{
+        this.$router.push({name: 'Home'})
       })
+      } else {
+        this.feedback = 'You must add a recipe title!'
+      }
+    
     }, 
     addIngredient(){
       if(this.ingredient){
@@ -49,7 +65,7 @@ export default {
       } else {
         this.feedback = 'Cannot add empty ingredient!'
       }
-    }
+    },
   }
   
 }
