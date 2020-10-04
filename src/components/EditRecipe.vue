@@ -28,6 +28,7 @@
 
 <script>
 import db from '@/firebase/init'
+import slugify from 'slugify'
 
 export default {
   name: 'AddRecipe',
@@ -52,9 +53,29 @@ export default {
     })
   },
   methods: {
-    editRecipe(){
-   console.log(this.recipe.ingredients, this.recipe.title)
-    }, 
+  editRecipe(){
+	if(this.recipe.title){
+		this.feedback = null;
+//create slug to turn title into url friendly title
+		this.recipe.slug = slugify(this.recipe.title, {
+			replacement: '-',
+//remove these globally from the slug
+			remove: /[$*_+~.()'"!\-:@]/g,
+			lower: true
+		})
+//this is an async request to add this object to the database
+//instead of add we will use .doc(id)
+		db.collection('recipes').doc(this.recipe.id).update({
+			title: this.recipe.title,
+			ingredients: this.recipe.ingredients,
+			slug: this.recipe.slug
+		}).then(()=> {
+			this.$router.push({name: 'Home'})
+    }).catch(err => console.log(err))
+  }	else {
+		this.feedback = 'You must enter a smoothie title'
+	}
+},
     addIngredient(){
       //make sure ingredient field isnt empty
       if(this.ingredient){
