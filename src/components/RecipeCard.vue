@@ -7,6 +7,9 @@
   <li v-for="(ingredient,i) in recipe.ingredients" :key="i">
     <span>{{ingredient}}</span>
   </li>
+  <!-- link to edit recipe and pass the slug from our recipe-->
+      <router-link :to="{name: 'EditRecipeView', params: {recipe_slug: recipe.slug}}">Edit Recipe</router-link>
+<br/>
   <button @click='deleteRecipe(recipe.id)'>Delete {{recipe.title}}</button>
 </ul>
     </div>
@@ -51,11 +54,13 @@ export default {
 };
 </script>
 
-<style lang="css">
+<style lang="css" scoped>
+
   .recipe-card-box {
     background-color: wheat;
     height: 40vh;
-    width: 20em;
+    width: 15em;
+    border-radius: 1em;;
   }
   li{
     list-style: none;

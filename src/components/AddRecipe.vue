@@ -9,6 +9,7 @@
     <div v-for="(ingredient, index) in ingredients" :key="index" class="ingredient-box">
       
       <input  name='ingredients' v-model="ingredients[index]"/>
+      <p @click='deleteIngredient(ingredient)'>Delete</p>
     </div>
     <br/>
     <label for="ingredient">Add Ingredient</label>
@@ -55,7 +56,6 @@ export default {
       } else {
         this.feedback = 'You must add a recipe title!'
       }
-    
     }, 
     addIngredient(){
       if(this.ingredient){
@@ -66,6 +66,9 @@ export default {
         this.feedback = 'Cannot add empty ingredient!'
       }
     },
+    deleteIngredient(ing){
+      this.ingredients = this.ingredients.filter(ingredient => ingredient !== ing)
+    }
   }
   
 }
@@ -76,6 +79,7 @@ export default {
     background-color: wheat;
     width: 60vw;
     height: 70vh;
+    border-radius:1em ;
   }
   form {
     padding: 1em;
