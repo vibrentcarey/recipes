@@ -99,7 +99,7 @@ export default {
 
 <style lang="css">
   .add-recipe {
-    background-color: wheat;
+    background-color: #d9adad;
     width: 60vw;
     height: 70vh;
     border-radius:1em ;
